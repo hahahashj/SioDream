@@ -12,4 +12,18 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  base: "./",
+  build: {
+    outDir: "dist",
+    emptyOutDir: true,
+  },
+  server: {
+    proxy: {
+      '/api': {  // 改为 /admin
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '') // 改为 /admin
+      }
+    }
+  }
 });

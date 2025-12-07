@@ -1,27 +1,16 @@
 {
   "extends": "./tsconfig.app.json",
   "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "vitest.setup.ts"
+    // ...existing include ...
   ],
   "exclude": [
-    "**/*.js",
-    "**/*.vue.js",
     "node_modules",
     "dist",
-    ".vercel",
-    ".vite",
-    "coverage"
+    "src/**/*.vue.js"
   ],
   "compilerOptions": {
     "composite": true,
     "lib": [],
-    "types": ["node", "jsdom"],
-    "allowJs": true,
-    "checkJs": false,
-    "skipLibCheck": true
+    "types": ["node", "jsdom"]
   }
 }
