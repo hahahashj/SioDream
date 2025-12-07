@@ -259,9 +259,9 @@ const cartCount = computed(() => cartItems.value.length);
 const cartTotal = computed(() => cartItems.value.reduce((s,i)=>s+i.price,0));
 
 const productList = [
-  { id: 101, name: "卡通国风纹样", price: 9.9, image: "src/assets/3.png" },
-  { id: 102, name: "传统纹样", price: 15.0, image: "src/assets/2.png" },
-  { id: 103, name: "共创纹样", price: 12.5, image: "src/assets/1.png" }
+  { id: 101, name: "卡通国风纹样", price: 9.9, image: "/3.png" },
+  { id: 102, name: "传统纹样", price: 15.0, image: "/2.png" },
+  { id: 103, name: "共创纹样", price: 12.5, image: "/1.png" }
 ];
 
 // 绘图相关
