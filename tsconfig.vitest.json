@@ -1,6 +1,21 @@
 {
   "extends": "./tsconfig.app.json",
-  "exclude": [],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "vitest.setup.ts"
+  ],
+  "exclude": [
+    "**/*.js",
+    "**/*.vue.js",
+    "node_modules",
+    "dist",
+    ".vercel",
+    ".vite",
+    "coverage"
+  ],
   "compilerOptions": {
     "composite": true,
     "lib": [],

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 // 引入你的组件
 import Workshop from '@/views/WorkShop.vue'
+import Login from '@/views/Login.vue'
 // 简单的占位组件，用于其他还没写的页面
 const Placeholder = { 
   template: `
@@ -17,7 +18,8 @@ const routes = [
   { path: '/workshop', component: Workshop }, // 这里是你做好的工坊页面
   { path: '/products', component: Placeholder },
   { path: '/creations', component: Placeholder },
-  { path: '/about', component: Placeholder }
+  { path: '/about', component: Placeholder },
+  { path: '/login', component: Login }
 ]
 
 const router = createRouter({

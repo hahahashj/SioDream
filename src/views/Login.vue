@@ -163,7 +163,7 @@
 
 <script setup>
 import { reactive, ref } from 'vue';
-import { empLoginService } from '../../api/user.js'
+import { empLoginService } from '../api/user.js'
 import { ElMessage } from 'element-plus'; // 添加这行
 import { useRouter } from 'vue-router'; // 添加这行
 
