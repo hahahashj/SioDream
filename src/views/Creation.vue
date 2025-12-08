@@ -46,7 +46,36 @@
               <button class="btn cancel-btn" @click="resetImage">❌ 取消</button>
             </div>
             <div v-if="step === 2" class="step-actions column-layout">
-              <!-- 模式切换 + 两种 slider 略 -->
+              <!-- 🧽 橡皮擦模式切换 -->
+              <div class="mode-row">
+                <button
+                  class="btn mode-btn"
+                  :class="{ active: eraseMode === 'magic' }"
+                  @click="eraseMode = 'magic'"
+                >
+                  ✨ 智能擦除
+                </button>
+                <button
+                  class="btn mode-btn"
+                  :class="{ active: eraseMode === 'free' }"
+                  @click="eraseMode = 'free'"
+                >
+                  ✏️ 自由擦除
+                </button>
+              </div>
+
+              <!-- 🎛 不同模式下的力度/半径调节 -->
+              <div class="slider-row" v-if="eraseMode === 'magic'">
+                <span>擦除容差：{{ tolerance }}</span>
+                <input type="range" min="5" max="80" v-model.number="tolerance" />
+              </div>
+
+              <div class="slider-row" v-else>
+                <span>笔刷半径：{{ eraseRadius }}</span>
+                <input type="range" min="5" max="80" v-model.number="eraseRadius" />
+              </div>
+
+              <!-- 操作按钮 -->
               <div class="btn-row">
                 <button class="btn undo-btn" @click="undo" :disabled="historyStep <= 0">
                   ↩️ 撤销

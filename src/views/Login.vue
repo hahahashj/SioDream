@@ -642,9 +642,17 @@ h1 {
   }
   
   .login-card {
-    margin-top: 20px;
-    padding: 25px 20px;
-  }
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  transition: transform 0.3s ease;
+  margin: 0 auto; /* ❗这里改成整体居中，别再写 0 auto 0 550px */
+}
   
   .logo {
     flex-direction: column;

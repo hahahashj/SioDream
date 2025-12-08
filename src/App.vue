@@ -146,6 +146,57 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
+  @media (max-width: 768px) {
+  .nav-content {
+    width: 100%;
+    padding: 0 12px;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+  }
+
+  .nav-right {
+    gap: 10px;
+  }
+
+  .nav-links {
+    gap: 12px;
+  }
+
+  .nav-item {
+    font-size: 14px;
+  }
+}
+
+/* 超小屏（比如宽度 < 480）时，让导航自动换行，不挤在一行 */
+@media (max-width: 480px) {
+  .glass-nav {
+    height: auto;
+    padding: 6px 0;
+  }
+
+  .nav-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .nav-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .nav-item {
+    padding-bottom: 2px;
+  }
+}
+
 :root {
   --nav-h: 60px;
 }
