@@ -21,9 +21,9 @@
             <path d="M50 15v30l-15 15h30L50 45V15z" fill="white" />
             <circle cx="50" cy="65" r="10" fill="white" />
           </svg>
-          <h1>OceanMart</h1>
+          <h1>SioDream</h1>
         </div>
-        <p>海航方舟,探索海洋般丰富的购物体验</p>
+        <p>绣梦，编制你的梦想图纹</p>
       </div>
       <form class="login-form" @submit.prevent="handleLogin">
         <div class="form-group">
