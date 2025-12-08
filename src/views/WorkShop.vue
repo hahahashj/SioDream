@@ -95,6 +95,13 @@
               📷 选择刺绣载体
               <input type="file" accept="image/*" @change="onSelectBackgroundImage" hidden/>
             </label>
+            <button
+              class="upload-btn glass-button"
+              @click.stop="goToCreations"
+              :disabled="!croppedImageUrl"
+            >
+              🪄 进阶抠图 & AR
+            </button>
           </div>
 
           <div v-if="backgroundImageUrl" class="canvas-wrapper">
@@ -428,6 +435,19 @@ const goToCheckout = () => {
   const url = router ? router.resolve({path:'/index/newpage'}).href : '#'; 
   window.open(url, '_blank'); 
 };
+const goToCreations = () => {
+  if (!croppedImageUrl.value) {
+    alert("请先在上面圈选并裁剪一个纹样喔~");
+    return;
+  }
+
+  // 1. 用 localStorage 把裁剪结果传给 /creations 页面
+  localStorage.setItem("sio_last_cropped", croppedImageUrl.value);
+
+  // 2. 跳转到 /creations 页面（同窗口跳转）
+  router.push({ path: "/creations" });
+};
+
 </script>
 
 <style>
@@ -522,6 +542,31 @@ body, html {
 }
 .coral-btn:hover { transform: scale(1.05); box-shadow: 0 6px 12px rgba(255,87,34, 0.3); }
 
+.preview-box p {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #006064;
+}
+
+.preview-img {
+  max-width: 220px;
+  max-height: 220px;
+  width: auto;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  background: white;
+}
+.upload-bg-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
 /* 面板内部 */
 .panel { padding: 25px; }
 .panel-title { font-size: 1.2rem; margin-bottom: 15px; color: #00838f; border-left: 5px solid #00bcd4; padding-left: 10px; }
@@ -627,4 +672,8 @@ body, html {
 .total-row { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 10px; font-size: 16px;}
 .total-price { color: #f56c6c; }
 .checkout-btn { width: 100%; font-size: 16px; padding: 12px; }
+.preview-box {
+  margin-top: 16px;
+  text-align: center;
+}
 </style>

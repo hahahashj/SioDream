@@ -160,105 +160,143 @@
     </div>
   </div>
 </template>
-
 <script setup>
-import { reactive, ref } from 'vue';
-import { empLoginService } from '../api/user.js'
-import { ElMessage } from 'element-plus'; // 添加这行
-import { useRouter } from 'vue-router'; // 添加这行
+import { reactive, ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
-const router = useRouter()
-const currentForm = ref('login')
-const showRegPassword = ref(false)
-const showRegRePassword = ref(false)
+const router = useRouter();
+
+// 当前显示的是登录还是注册
+const currentForm = ref('login');
+
+// 显示/隐藏密码
+const showRegPassword = ref(false);
+const showRegRePassword = ref(false);
 const showPassword = ref(false);
+
+// 记住我（这里只做前端）
 const rememberMe = ref(false);
-// 响应式状态
+
+// 注册表单数据（纯前端校验 + 提示文案）
 const registerData = reactive({
   username: '',
   password: '',
   email: '',
   rePassword: ''
 });
+
+// 登录表单数据
 const loginData = reactive({
   username: '',
   password: ''
 });
-//切换到注册表单
+
+// 组件挂载时：如果之前“记住我”了，就把用户名带回来
+onMounted(() => {
+  const rememberedUser = localStorage.getItem('rememberedUser');
+  if (rememberedUser) {
+    loginData.username = rememberedUser;
+    rememberMe.value = true;
+  }
+});
+
+// 切换到注册表单
 const switchToRegister = () => {
-  currentForm.value = 'register'
-}
-// 切换到登录表单  
+  currentForm.value = 'register';
+};
+
+// 切换到登录表单
 const switchToLogin = () => {
-  currentForm.value = 'login'
-}
-const handleRegister = async () => { 
-    if (!registerData.username.trim() || !registerData.email.trim() || 
-      !registerData.password || !registerData.rePassword) {
+  currentForm.value = 'login';
+};
+
+// 注册逻辑（完全前端模拟）
+const handleRegister = () => {
+  if (
+    !registerData.username.trim() ||
+    !registerData.email.trim() ||
+    !registerData.password ||
+    !registerData.rePassword
+  ) {
     alert('请填写完整的注册信息');
     return;
-    }
-    
-    // 验证密码一致性
-    if (registerData.password !== registerData.rePassword) {
-        alert('两次输入的密码不一致');
-        return;
-    }
-    
-    // 验证邮箱格式（可选）
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(registerData.email)) {
-        alert('请输入有效的邮箱地址');
-        return;
-    }
-    
-    // 验证密码长度（可选）
-    if (registerData.password.length < 6) {
-        alert('密码长度不能少于6位');
-        return;
-    }
-    
-    // 所有验证通过，执行注册逻辑
-    console.log('注册信息:', registerData);
-    alert('注册成功！');
+  }
+
+  // 验证密码一致性
+  if (registerData.password !== registerData.rePassword) {
+    alert('两次输入的密码不一致');
+    return;
+  }
+
+  // 验证邮箱格式（可选）
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(registerData.email)) {
+    alert('请输入有效的邮箱地址');
+    return;
+  }
+
+  // 验证密码长度（可选）
+  if (registerData.password.length < 6) {
+    alert('密码长度不能少于6位');
+    return;
+  }
+
+  // 这里只是模拟，不真的创建账号
+  console.log('注册信息(前端模拟):', { ...registerData });
+  alert('注册信息已提交（当前为前端模拟注册，实际仅 admin 账号可登录）');
+
+  // 注册完自动切回登录页，并把用户名带过去
+  loginData.username = registerData.username;
+  currentForm.value = 'login';
 };
-// 登录处理函数
-const handleLogin = async() => {
+
+// 登录处理函数（前端模拟：admin / 123456）
+const handleLogin = () => {
   if (!loginData.username.trim() || !loginData.password) {
     alert('请填写完整的登录信息');
     return;
   }
-  
-  try {
-    const result = await empLoginService(loginData)
-    console.log('登录响应:', result)
-    
-    if (result.code === 1) {
-      ElMessage.success('登录成功!') // 现在可以正常使用了
-      
-      // 保存数据
-      localStorage.setItem('token', result.data.token)
-      localStorage.setItem('userInfo', JSON.stringify({
-        id: result.data.id,
-        username: result.data.userName,
-        name: result.data.name
-      }))
-      
-      router.push('/index')
+
+  const user = loginData.username.trim();
+  const pwd = loginData.password;
+
+  // ✅ 只允许 admin / 123456 这一组
+  if (user === 'admin' && pwd === '123456') {
+    // 1. 存当前登录用户（给导航栏、/creations 等页面用）
+    localStorage.setItem(
+      'currentUser',
+      JSON.stringify({
+        username: 'admin',
+        displayName: '管理员'
+      })
+    );
+
+    // 2. 处理“记住我”
+    if (rememberMe.value) {
+      localStorage.setItem('rememberedUser', user);
     } else {
-      ElMessage.error(result.msg || '登录失败')
+      localStorage.removeItem('rememberedUser');
     }
-  } catch (error) {
-    console.error('登录错误:', error)
-    ElMessage.error('登录失败: ' + error.message)
+
+    // 3. 额外放一个简单标记（可选，其他地方可以用）
+    localStorage.setItem('isLoggedIn', 'true');
+
+    alert('登录成功，欢迎 admin！');
+    router.push('/index'); // 跳转到首页
+  } else {
+    alert('用户名或密码错误（提示：用户名 admin，密码 123456）');
   }
-  
-  console.log('登录信息:', loginData);
+
+  console.log('登录信息(前端模拟):', { ...loginData });
 };
+
+// 忘记密码提示
 const ForgetHandle = () => {
-  alert('username: admin, password: 123456');
+  alert('演示账号为：admin / 123456');
 };
 </script>
+
+
 
 <style scoped>
 /* 基础样式 */
@@ -427,7 +465,7 @@ const ForgetHandle = () => {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   padding: 30px;
   transition: transform 0.3s ease;
-  margin: 0 auto 0 460px; /* 上右下左，向左移动20px */
+  margin: 0 auto 0 550px; /* 上右下左，向左移动20px */
 }
 
 .login-card:hover {

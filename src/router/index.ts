@@ -4,6 +4,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Workshop from '@/views/WorkShop.vue'
 import Login from '@/views/Login.vue'
 import About from '@/views/About.vue'
+import Creation from '@/views/Creation.vue'
+import Home from '@/views/Home.vue'
 // 简单的占位组件，用于其他还没写的页面
 const Placeholder = { 
   template: `
@@ -18,9 +20,10 @@ const routes = [
   { path: '/index', component: Placeholder }, // 主页暂时用占位
   { path: '/workshop', component: Workshop }, // 这里是你做好的工坊页面
   { path: '/products', component: Placeholder },
-  { path: '/creations', component: Placeholder },
+  { path: '/creations', component: Creation },
   { path: '/about', component: About },
-  { path: '/login', component: Login }
+  { path: '/login', component: Login },
+  { path: '/Home', component: Home },
 ]
 
 const router = createRouter({
